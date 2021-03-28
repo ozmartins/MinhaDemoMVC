@@ -24,12 +24,33 @@ namespace MinhaDemoMVC.Controllers
         [Route("list/{id:int}/{category:int?}")]
         public IActionResult Index(int id, int category)
         {
-            return View();
+            var movie = new Movie()
+            {
+                Title = "Hi",
+                ReleaseDate = DateTime.Now,
+                Genre = null,
+                Grade = 10,
+                Price = 200000
+            };
+
+            return RedirectToAction("Privacy", movie);
+            //return View();
         }
 
         [Route("privacy")]
-        public IActionResult Privacy()
+        public IActionResult Privacy(Movie movie)
         {
+            if (!ModelState.IsValid)
+            {
+                var msg = "";
+
+                foreach (var erro in ModelState.Values.SelectMany(v => v.Errors))
+                {
+                    msg += erro.ErrorMessage + "\n";
+                }
+
+                return Content(msg);
+            }
             //return Json("{nome: Oseias}");
             // var fileBytes = System.IO.File.ReadAllBytes(@"D:\Pedido.pdf");
             //var fileName = "Pedido.pdf";
